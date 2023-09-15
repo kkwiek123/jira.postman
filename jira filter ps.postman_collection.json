@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "412fe301-870c-4dcd-ac44-8acdbdbdb259",
+		"name": "jira filter ps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26010833"
+	},
+	"item": [
+		{
+			"name": "create filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"filterName\", \"newFilter\" + pm.variables.replaceIn('{{$timestamp}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"check desription\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs ps\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{filterName}}\",\r\n    \"description\": \"Lists all open bugs ps\",\r\n    \"jql\": \"project = MB007 order by created DESC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create filter with the same name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"check error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errors[\"filterName\"]).to.eql(\"Filtr o takiej samej nazwie już istnieje.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"All Open Bugs ps\",\r\n    \"description\": \"Lists all open bugs ps\",\r\n    \"jql\": \"project = MB007 order by created DESC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"check filter name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"newFilter1694690938\");\r",
+							"});\r",
+							"pm.test(\"check filter description\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs ps\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter/10039",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter",
+						"10039"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get filter witch doesn't exist",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"check error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errorMessages[0]).to.eql(\"Wybrany filtr nie jest dostępny; prawdopodobnie został usunięty lub jego uprawnienia uległy zmianie.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter/12",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.environment.set(\"filterNameAfterUpdate\", \"UpdateFilter\" + pm.variables.replaceIn('{{$timestamp}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"check desription\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs ps\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{filterNameAfterUpdate}}\",\r\n    \"description\": \"Lists all open bugs ps\",\r\n    \"jql\": \"project = MB007 order by created DESC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter/10035",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter",
+						"10035"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create filter filter to delete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"filterNameToDelete\", \"filterToDelete\" + pm.variables.replaceIn('{{$timestamp}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"check desription\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs ps\");\r",
+							"});\r",
+							"pm.globals.set(\"idToDelete\", pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{filterNameToDelete}}\",\r\n    \"description\": \"Lists all open bugs ps\",\r\n    \"jql\": \"project = MB007 order by created DESC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"filterNameToDelete\", \"filterToDelete\" + pm.variables.replaceIn('{{$timestamp}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF0I1T7Ys62JoLtWfLG_rndfsLlGJLAFdA1fu33qjM5uS6oIW6MQxygwiSh49Lt-nk8i2r-VPMcJETbdlRokfI7PQsOvsYVnxNPd_viua5i7Ff64ZjlIsOWcT3kgkt56EyJZp6oAcStaRe7jGy2aLqAGsuZw0H5eHWopjRs1quxkUY=FFD89126",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "kwiek-kamil@wp.pl",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{filterNameToDelete}}\",\r\n    \"description\": \"Lists all open bugs ps\",\r\n    \"jql\": \"project = MB007 order by created DESC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kwiek-kamil.atlassian.net/rest/api/latest/filter/{{idToDelete}}",
+					"protocol": "https",
+					"host": [
+						"kwiek-kamil",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"latest",
+						"filter",
+						"{{idToDelete}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
